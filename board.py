@@ -15,5 +15,16 @@ def initial_board():
 
 
 def move_piece(board, start, end):
-    board[end[0]][end[1]] = board[start[0]][start[1]]
-    board[start[0]][start[1]] = "."
+    """Move a piece. If it was a jump, remove the jumped piece.
+
+    Returns the square of the captured piece, or None for a plain move.
+    """
+    sr, sc = start
+    er, ec = end
+    captured = None
+    if abs(er - sr) == 2:  # a jump: the jumped square is the midpoint
+        captured = ((sr + er) // 2, (sc + ec) // 2)
+        board[captured[0]][captured[1]] = "."
+    board[er][ec] = board[sr][sc]
+    board[sr][sc] = "."
+    return captured 
